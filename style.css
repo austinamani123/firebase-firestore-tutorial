@@ -10,6 +10,6 @@
 	}
 
 	body {
-		@apply font-ubuntu text-blue-800 antialiased;
+		@apply bg-red-100 font-ubuntu;
 	}
 }
