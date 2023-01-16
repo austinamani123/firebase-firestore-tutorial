@@ -22,7 +22,7 @@
 	}
 
 	li {
-		@apply relative border-b-[1px] border-solid border-b-slate-100 bg-slate-200 p-5 text-xl text-neutral-600;
+		@apply relative border-b-[1px] border-solid border-b-slate-100 bg-slate-200 p-5 text-xl text-neutral-500;
 	}
 
 	li:nth-child(even) {

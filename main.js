@@ -3,7 +3,14 @@
 // Import the functions you need from the SDK's you need
 import { initializeApp } from 'firebase/app';
 import './style.css';
-import { getDocs, getFirestore, collection } from 'firebase/firestore';
+import {
+	getDocs,
+	getFirestore,
+	collection,
+	addDoc,
+	deleteDoc,
+	doc,
+} from 'firebase/firestore';
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
@@ -28,21 +35,38 @@ const colRef = collection(db, 'Cafes');
 
 //Html Dom Elements
 const cafeList = document.querySelector('#cafe-list');
+const form = document.querySelector('#add-cafe-form');
 
 //Create element and render cafe
 function renderCafe(doc) {
 	let li = document.createElement('li');
 	let name = document.createElement('span');
 	let city = document.createElement('span');
+	let cross = document.createElement('div');
 
 	li.setAttribute('data-id', doc.id);
 	name.textContent = doc.data().Name;
 	city.textContent = doc.data().City;
+	cross.textContent = 'x';
 
 	li.appendChild(name);
 	li.appendChild(city);
+	li.appendChild(cross);
 
 	cafeList.appendChild(li);
+
+	//DELETING DATA
+
+	//Adding an event listener for deleting documents
+	cross.addEventListener('click', (e) => {
+		e.stopPropagation();
+
+		//Get document id
+		let id = e.target.parentElement.getAttribute('data-id');
+
+		//
+		deleteDocument(id);
+	});
 }
 
 //Get all documents from the cafes collection and display them
@@ -68,3 +92,38 @@ function renderCafe(doc) {
 		renderCafe(doc);
 	});
 })();
+
+// #3 SAVING DATA
+
+// Adding a document
+async function addDocument() {
+	try {
+		const docRef = await addDoc(collection(db, 'Cafes'), {
+			Name: form.name.value,
+			City: form.city.value,
+		});
+
+		console.log('Document written with ID', docRef.id);
+	} catch (err) {
+		console.error('Error adding document', err);
+	}
+}
+
+//Adding an event listener for adding documents and preventing the default action (refreshing)
+
+form.addEventListener('submit', (e) => {
+	e.preventDefault();
+
+	// Add data
+	addDocument();
+
+	// Clear form
+	form.name.value = '';
+	form.city.value = '';
+});
+
+// #4 DELETING DATA
+//Deleting document from the cafes collection
+async function deleteDocument(id) {
+	await deleteDoc(doc(db, 'Cafes', id));
+}
