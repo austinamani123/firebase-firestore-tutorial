@@ -13,6 +13,7 @@ import {
 	query,
 	where,
 	orderBy,
+	onSnapshot,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -58,7 +59,7 @@ function renderCafe(doc) {
 
 	cafeList.appendChild(li);
 
-	//DELETING DATA
+	// #4 DELETING DATA
 
 	//Adding an event listener for deleting documents
 	cross.addEventListener('click', (e) => {
@@ -133,6 +134,26 @@ function renderCafe(doc) {
 // 		renderCafe(doc);
 // 	});
 // })();
+
+// #7 REALTIME LISTENER
+//
+
+(async function rtUpdates() {
+	const cafeRef = collection(db, 'Cafes');
+	const qry = await query(cafeRef, orderBy('Name'));
+
+	onSnapshot(qry, (snapshot) => {
+		snapshot.docChanges().forEach((change) => {
+			if (change.type === 'added') {
+				renderCafe(change.doc);
+			} else if (change.type === 'removed') {
+				let li = cafeList.querySelector('[data-id=' + change.doc.id + ']');
+
+				cafeList.removeChild(li);
+			}
+		});
+	});
+})();
 
 // #3 SAVING DATA
 
