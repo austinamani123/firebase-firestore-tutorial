@@ -10,6 +10,9 @@ import {
 	addDoc,
 	deleteDoc,
 	doc,
+	query,
+	where,
+	orderBy,
 } from 'firebase/firestore';
 
 // Your web app's Firebase configuration
@@ -69,6 +72,44 @@ function renderCafe(doc) {
 	});
 }
 
+// #5 QUERIES
+//
+// (async function getDocuments() {
+// 	try {
+// 		const cafeRef = collection(db, 'Cafes');
+// 		//const snapshot = await getDocs(cafeRef);
+// 		//const qry = await query(cafeRef, where('City', '==', 'Marioland'));
+// 		//const snapshot = await getDocs(qry);
+
+// 		snapshot.forEach((doc) => {
+// 			renderCafe(doc);
+// 		});
+
+// 		console.log('Documents successfully retrieved...');
+// 	} catch (err) {
+// 		console.error('Error retrieving documents: ', err);
+// 	}
+// })();
+
+// #6 ORDERING DATA
+//
+// (async function orderData() {
+// 	try {
+// 		const cafeRef = collection(db, 'Cafes');
+
+// 		const qry = await query(cafeRef, where('City', '==', 'Marioland'), orderBy('Name'));
+// 		const snapshot = await getDocs(qry);
+
+// 		snapshot.forEach((doc) => {
+// 			renderCafe(doc);
+// 		});
+
+// 		console.log('Documents successfully retrieved...');
+// 	} catch (err) {
+// 		console.error('Error retrieving documents: ', err);
+// 	}
+// })();
+
 //Get all documents from the cafes collection and display them
 //const snapshot = await getDocs(collection(db, 'Cafes'));
 
@@ -85,13 +126,13 @@ function renderCafe(doc) {
 //});
 
 //Render using an IIFE function
-(async function getDocuments() {
-	const snapshot = await getDocs(collection(db, 'Cafes'));
+// (async function getDocuments() {
+// 	const snapshot = await getDocs(collection(db, 'Cafes'));
 
-	snapshot.forEach((doc) => {
-		renderCafe(doc);
-	});
-})();
+// 	snapshot.forEach((doc) => {
+// 		renderCafe(doc);
+// 	});
+// })();
 
 // #3 SAVING DATA
 
