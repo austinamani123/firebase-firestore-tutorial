@@ -139,20 +139,24 @@ function renderCafe(doc) {
 //
 
 (async function rtUpdates() {
-	const cafeRef = collection(db, 'Cafes');
-	const qry = await query(cafeRef, orderBy('Name'));
+	try {
+		const cafeRef = collection(db, 'Cafes');
+		const qry = await query(cafeRef, orderBy('Name'));
 
-	onSnapshot(qry, (snapshot) => {
-		snapshot.docChanges().forEach((change) => {
-			if (change.type === 'added') {
-				renderCafe(change.doc);
-			} else if (change.type === 'removed') {
-				let li = cafeList.querySelector('[data-id=' + change.doc.id + ']');
+		onSnapshot(qry, (snapshot) => {
+			snapshot.docChanges().forEach((change) => {
+				if (change.type === 'added') {
+					renderCafe(change.doc);
+				} else if (change.type === 'removed') {
+					let li = cafeList.querySelector('[data-id=' + change.doc.id + ']');
 
-				cafeList.removeChild(li);
-			}
+					cafeList.removeChild(li);
+				}
+			});
 		});
-	});
+	} catch (err) {
+		console.log('Error retreiving documents:', err);
+	}
 })();
 
 // #3 SAVING DATA
